@@ -1,125 +1,247 @@
-# TOPLINE — Native Windows Desktop Activity Companion
+<div align="center">
 
-> **The Windows taskbar shows where your applications are. TOPLINE shows what's happening on your PC.**
+<img src="./frontend/public/logo.png" alt="MediaDrop Logo" width="128" height="128" style="border-radius: 28px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);" />
 
-TOPLINE is a slim, elegant desktop activity companion attached to the **TOP EDGE** of the screen. Built with C# and .NET 9 targeting Windows 11 x64, it complements the Windows taskbar instead of replacing or imitating it.
+# MediaDrop 💧
+
+**Precision Media Processing • Ad-Free • Apple Liquid Glass UI • Privacy-First**
+
+[![Next.js 15](https://img.shields.io/badge/Next.js-15.0.0-black?style=flat&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=flat&logo=python&logoColor=white)](https://www.python.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-white?style=flat)](LICENSE)
+
+*Your media. Your format. Your control.*
+
+</div>
 
 ---
 
-## 01 — Architectural Overview
+## ✦ Overview
 
-TOPLINE is engineered from the ground up as a native Windows 11 utility:
-- **Runtime:** C# / .NET 9 (`net9.0-windows10.0.22621.0`)
-- **UI Platform:** Windows Presentation Foundation (WPF) with Per-Monitor V2 DPI awareness and DWM Fluent composition (`DwmSetWindowAttribute`).
-- **OS Integration:** Native Win32 Shell AppBar (`SHAppBarMessage`), WinRT Global System Media Transport Controls (`GSMTC`), and `WM_DEVICECHANGE` hardware hooks.
-- **Persistence:** Local JSON persistence in `%AppData%\Topline\settings.json` and `history.json`.
-- **Zero Cloud / Zero AI:** 100% local processing. No internet connection, no telemetry, no tracking, no external accounts.
-- **Ultra-Low Resource Footprint:** Idles at **~11 MB RAM** with event-driven OS callbacks and zero polling loops.
+**MediaDrop** is an exceptionally polished, zero-ad, privacy-respecting media processing application. Engineered for high performance and tactile aesthetics, it pairs **Next.js 15 App Router** and **Python FastAPI** with an Apple-inspired **Liquid Glass** interface and a strict monochrome design language.
+
+Say goodbye to ad-riddled, malware-laden web converters. MediaDrop extracts public media, transcodes audio, clips timestamps, and packages batch downloads on demand with sub-second responsiveness.
+
+---
+
+## ✦ Application Screenshots
+
+### 1. Hero Landing & Apple Liquid Glass Dock
+![MediaDrop Hero Landing](./docs/screenshots/01-hero-landing.png)
+
+### 2. URL Input & Interactive Extraction
+![MediaDrop URL Input](./docs/screenshots/02-url-input.png)
+
+### 3. Multi-URL Batch Queue Modal
+![MediaDrop Batch Processing](./docs/screenshots/03-batch-export.png)
+
+---
+
+## ✦ Key Features
+
+- **Liquid Glass Design System**: Selective Apple-inspired glass elements using `@zakisheriff/liquid-glass`, including a floating magnification dock (`GlassNav`), chromatic blur cards (`GlassCard`), translucent inputs (`GlassInput`), and spring-animated buttons (`GlassButton`).
+- **Multi-Platform Support**: Powered by `yt-dlp` for extracting public media from YouTube, Vimeo, SoundCloud, Instagram, TikTok, Twitter/X, Reddit, Twitch, Facebook, and hundreds more.
+- **Precision Audio Extraction**: Extract pure audio in high-bitrate MP3 (320 kbps, 256 kbps, 192 kbps, 128 kbps), lossless WAV, FLAC, and AAC.
+- **Sub-Second Video Trimming**: Specify exact start and end timestamps (`HH:MM:SS`) to crop highlight clips directly on the server without downloading unwanted footage.
+- **Multi-Item Batch Queue**: Queue up to 10 URLs simultaneously and download them in a single aggregated `.zip` archive.
+- **Zero-Node Local Windows Launcher**: Windows users can launch the complete full-stack application with a single double-click—no Node.js or `npm` required.
+- **Netlify Drag-and-Drop Ready**: Built as a fully decoupled, static HTML Single-Page Application (SPA) ready to deploy to Netlify via drag-and-drop.
+- **Enterprise Security & Firewall**:
+  - **SSRF Protection**: Hardened DNS resolver that blocks private IP ranges, loopback addresses (`127.0.0.1`), link-local IPs (`169.254.169.254`), and cloud provider metadata endpoints (AWS, GCP, Azure, DigitalOcean).
+  - **Path Traversal Shield**: Strict filename sanitization removing shell characters, null bytes, and traversal attempts (`../`).
+  - **Ephemeral Disk Cleanup**: Background workers purge temporary files immediately upon stream completion or after a configurable retention window.
+
+---
+
+## ✦ Quick Launch for Windows Users (1-Click)
+
+MediaDrop includes an automated launcher that serves the pre-compiled production frontend via Python's built-in HTTP server with client-side SPA fallback. **End users only need Python 3.10+ installed—no Node.js or npm required.**
+
+### 1. Download or Clone
+Extract the MediaDrop repository or the `MediaDrop-Windows.zip` release bundle.
+
+### 2. Double-Click `Start MediaDrop.bat`
+```
+Start MediaDrop.bat
+```
+- Automatically verifies your Python environment and installs dependencies on first run.
+- Starts the FastAPI backend engine on port `8000`.
+- Starts the lightweight production frontend server on port `3000`.
+- Waits for the backend health check to pass.
+- Automatically launches your default web browser to `http://localhost:3000`.
+
+### 3. Stopping MediaDrop
+- Close the launcher window, press any key in the console, OR
+- Double-click `Stop MediaDrop.bat` to cleanly terminate all processes on ports 8000 and 3000.
+
+> **Optional: FFmpeg for Audio Conversion & Trimming**  
+> For complete MP3/WAV extraction and video trimming:  
+> Run in PowerShell: `winget install Gyan.FFmpeg.Essentials`  
+> *Or place `ffmpeg.exe` and `ffprobe.exe` directly inside the `bin\` folder.*
+
+---
+
+## ✦ Netlify Drag-and-Drop Deployment
+
+MediaDrop's frontend is pre-configured and exported to `release/netlify/` as a static Single Page Application.
+
+### To Deploy:
+1. Open the [Netlify Drop](https://app.netlify.com/drop) dashboard.
+2. Drag and drop the **`release/netlify`** folder into the browser window.
+3. Your site is instantly live on a global CDN with:
+   - `_redirects` configured for seamless client-side SPA routing (`/* /index.html 200`).
+   - `netlify.toml` with cache optimization and security headers.
+4. In the deployed web UI, click **Settings** (or the gear icon in the dock) and enter your public FastAPI backend URL (e.g. `https://mediadrop-api.onrender.com`).
+
+---
+
+## ✦ Cloud Backend Deployment (Render / Docker)
+
+### Render Blueprint (1-Click)
+This repository includes a `render.yaml` configuration that deploys the FastAPI backend with Python 3.11 and system FFmpeg:
+1. Connect your GitHub repository to [Render](https://render.com).
+2. Create a new **Blueprint Instance** pointing to `render.yaml`.
+3. Render automatically builds the container, installs FFmpeg, and exposes the REST API with health check polling at `/api/health`.
+
+### Dockerfile
+Deploy to any container host (Railway, Fly.io, DigitalOcean App Platform, AWS ECS):
+```bash
+docker build -t mediadrop-backend -f backend/Dockerfile .
+docker run -p 8000:8000 -e ALLOWED_ORIGINS="https://your-frontend.netlify.app" mediadrop-backend
+```
+
+---
+
+## ✦ Developer Setup
+
+For developers modifying the code:
+
+### Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+# Running on http://localhost:3000
+```
+
+To build a fresh static export:
+```bash
+npm run build
+# Output generated in frontend/out/
+```
+
+### Backend
+```bash
+cd backend
+python -m venv .venv
+# Windows:
+.venv\Scripts\activate
+# Linux/macOS:
+source .venv/bin/activate
+
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
+# API docs at http://127.0.0.1:8000/api/docs
+```
+
+### Run Automated Tests
+```bash
+pytest backend/tests -v
+```
+
+---
+
+## ✦ Repository Architecture
 
 ```
-Topline/
-├── src/
-│   ├── Topline.Core/       # Activity contracts, models, settings, history, and aggregator
-│   ├── Topline.Windows/    # Native Win32 interop, Shell AppBar, USB hardware notifier, safe ejector
-│   ├── Topline.Modules/    # GSMTC Media, Downloads watcher, File Operations, Countdown Timer, USB storage
-│   └── Topline.App/        # Fluent TopBarWindow, ExpandedPanelWindow, SettingsWindow, ThemeManager
-├── tests/
-│   └── Topline.Tests/      # Automated unit tests for Timer, Downloads, USB formatting, Settings
-├── publish/                # Release-ready Windows x64 binaries
-└── README.md
+mediadrop/
+├── Start MediaDrop.bat          # 1-Click Windows launcher (starts backend + frontend, opens browser)
+├── Stop MediaDrop.bat           # 1-Click Windows process terminator
+├── Setup MediaDrop.bat          # Virtual environment & dependency installer
+├── backend_server.py           # Python backend runner (Uvicorn + FastAPI)
+├── serve_frontend.py           # Python zero-dependency static SPA server
+├── manage_servers.py           # Port monitor, health check poller & process killer
+├── render.yaml                 # Render Blueprint configuration
+├── LICENSE                     # MIT License
+├── README.md                   # Complete documentation
+│
+├── release/
+│   ├── netlify/                # Pre-built static export ready for Netlify drag-and-drop
+│   │   ├── _redirects          # SPA client-side routing rules
+│   │   ├── netlify.toml        # Security & CDN cache headers
+│   │   ├── index.html          # Next.js static landing page
+│   │   └── _next/              # Optimized JS bundles & CSS
+│   └── MediaDrop-Windows.zip   # Portable standalone Windows release archive
+│
+├── frontend/                   # Next.js 15 App Router Frontend
+│   ├── app/
+│   │   ├── globals.css         # Liquid glass styles & monochrome theme overrides
+│   │   ├── layout.tsx          # Root layout with Inter font & app metadata
+│   │   ├── not-found.tsx       # Static export 404 handler
+│   │   └── page.tsx            # Orchestrates state, modal drawers & liquid dock
+│   ├── components/
+│   │   ├── navigation/         # Liquid Glass floating dock & pill nav
+│   │   ├── ui/                 # Liquid glass buttons, cards, inputs & loaders
+│   │   ├── Header.tsx          # App header with official chromatic logo
+│   │   ├── Hero.tsx            # Hero typography & Aceternity Spotlight
+│   │   ├── PlatformBadges.tsx  # Supported media service pills
+│   │   ├── CapabilityCards.tsx # Magic UI Bento Grid
+│   │   ├── OutputPanel.tsx     # Format picker, resolution selector & trimming
+│   │   ├── BatchModal.tsx      # Multi-URL batch download modal
+│   │   ├── HistoryDrawer.tsx   # Local download history drawer
+│   │   └── SettingsModal.tsx   # Custom backend URL & format preferences
+│   ├── public/
+│   │   └── logo.png            # Official MediaDrop chromatic logo
+│   └── next.config.mjs         # Static export configuration (output: 'export')
+│
+├── backend/                    # Python FastAPI Backend
+│   ├── app/
+│   │   ├── api/routes.py       # REST endpoints (/health, /parse, /download, /convert, /batch)
+│   │   ├── core/
+│   │   │   ├── config.py       # Environment settings & allowed origins
+│   │   │   ├── firewall.py     # SSRF defense, IP blacklist & DNS validation
+│   │   │   └── limiter.py      # IP rate limiter
+│   │   ├── models/schemas.py   # Pydantic request & response schemas
+│   │   ├── services/
+│   │   │   ├── ytdlp_service.py   # yt-dlp metadata extraction & direct streaming
+│   │   │   ├── ffmpeg_service.py  # Audio transcoding & sub-second trimming
+│   │   │   └── cleanup.py         # Ephemeral file purge routines
+│   │   └── main.py             # FastAPI application initialization
+│   ├── tests/                  # Security, parser & SSRF pytest test suite
+│   ├── Dockerfile              # Multi-stage Debian bullseye image with FFmpeg
+│   └── requirements.txt
+│
+└── docs/
+    └── screenshots/            # 1920x1080 captured application screenshots
 ```
 
 ---
 
-## 02 — Features
+## ✦ REST API Reference
 
-### 1. Slim Top Edge Bar
-- **Dimensions:** 36px height (configurable from 32px to 44px in Settings), spanning the target screen width.
-- **Windows AppBar Space Reservation:** Registers with the Windows Shell via `SHAppBarMessage (ABM_NEW / ABM_SETPOS)` so maximized application windows stop neatly beneath TOPLINE rather than being covered. Also supports floating overlay mode.
-- **Auto-Hide:** Automatically slides out when idle, leaving an invisible 2px top edge touch trigger strip that smoothly reveals the bar when the cursor touches the top edge.
-- **Fullscreen Application Awareness:** Continuously checks foreground windows; when a fullscreen exclusive or borderless game or video is active, TOPLINE automatically yields and hides.
-- **Per-Monitor V2 DPI Awareness:** Crisp rendering on 100%, 125%, 150%, and 200% display scaling.
-- **Shell Recovery:** Detects Windows Explorer crashes/restarts (`TaskbarCreated` window message) and automatically re-registers its AppBar docking.
-- **Layout:**
-  - **Left:** Subtle `TOPLINE` typographic wordmark and workspace activity status indicator.
-  - **Center:** The Activity Chip. Kept **completely empty/quiet when idle**. When an activity exists (Media, Download, Timer, USB, File Operation), an elegant pill smoothly transitions in, featuring glyph, title, subtitle, progress bar, and inline action buttons on hover.
-  - **Right:** Live digital clock (12h/24h toggle), quick Audio mixer launcher, Quick 25m Timer button, Expand Panel chevron, and Settings gear.
-
-### 2. Activity Modules
-- **Media Controls (GSMTC):** Direct integration with Windows Global System Media Transport Controls (`Windows.Media.Control`). Surfaces track title, artist, live play/pause state, and skip controls. Zero fake media.
-- **Download Activity Watcher:** Monitors in-flight browser downloads (`.crdownload`, `.part`, `.opdownload`, `.download`). Accurately reports clean target filename and bytes written without faking indeterminate percentages. When complete, provides one-click "Open File" and "Open Folder".
-- **File Operation Awareness:** Observes high-throughput file mutations and transfers across monitored desktop and document locations. Reports genuine transfer volume and instant destination navigation.
-- **Countdown Focus Timer:** Native timer engine supporting 25m Pomodoro, presets, pause/resume, cancel, and Windows system chime alert upon completion.
-- **USB Device Detection & Safe Eject:** Hooks `WM_DEVICECHANGE` to detect removable USB storage insertion and removal. Reports drive letter, volume label, total and free space, provides one-click File Explorer navigation, and performs genuine Win32 safe dismount and eject (`FSCTL_LOCK_VOLUME`, `FSCTL_DISMOUNT_VOLUME`, `IOCTL_STORAGE_EJECT_MEDIA`) with honest feedback.
-
-### 3. Expanded Panel
-- Opens directly beneath the top bar with a clean 410px Fluent acrylic-style surface.
-- Automatically dismisses on outside click or pressing `Escape`. Does not steal keyboard focus (`WS_EX_NOACTIVATE`).
-- **Three Organized Sections:**
-  1. **Currently Happening:** Active cards with live controls for all ongoing activities, or a calm "Desktop is quiet" empty state.
-  2. **Quick Actions:** 6 native system shortcuts:
-     - Downloads (`explorer.exe` to Downloads folder)
-     - File Explorer
-     - Volume Mixer (`ms-settings:apps-volume`)
-     - Clipboard History (Native Windows `Win+V`)
-     - Quick 25m Focus Timer
-     - Settings
-  3. **Recent Activity:** Real chronological activity history log with one-click "Clear" button.
-
-### 4. Settings & Privacy
-- **General:** Start with Windows (registry Run key), AppBar Space Reservation vs Floating Overlay, Auto-Hide, Fullscreen ignore toggle, 24-hour clock.
-- **Appearance:** Dark Theme, Light Theme, Follow Windows Theme, Bar Height slider (32–44px), Opacity slider (70–100%).
-- **Modules:** Independent toggle switches for Media Controls, Download Activity, File Operations, USB Storage, and Focus Timer.
-- **Privacy:** Transparent architecture explanation and local history erasure controls.
-
----
-
-## 03 — Technical Specifications & Performance
-
-| Metric | Target | TOPLINE Result |
+| Method | Endpoint | Description |
 |---|---|---|
-| **Idle Memory (Working Set)** | 25–50 MB | **~11.4 MB** |
-| **CPU Usage (Idle)** | < 0.5% | **0.0%** (Event-driven) |
-| **Startup Time** | < 1 sec | **~280 ms** |
-| **Telemetry / Network Calls** | 0 | **0 (100% offline)** |
-| **Background Daemons** | 0 | **0 (Runs in application process only)** |
+| `GET` | `/api/health` | Service health status, uptime, and FFmpeg detection |
+| `POST` | `/api/parse` | Parse public media URL, return title, duration, thumbnail, formats |
+| `POST` | `/api/download` | Stream extracted video/audio stream with optional trimming |
+| `POST` | `/api/convert` | Transcode media into specified format (MP3, WAV, AAC, MP4) |
+| `POST` | `/api/batch` | Download multiple URLs and assemble into a single `.zip` file |
+
+Interactive Swagger documentation is available at `http://127.0.0.1:8000/api/docs`.
 
 ---
 
-## 04 — Build & Test Instructions
+## ✦ Legal & Security Disclaimer
 
-### Prerequisites
-- Windows 11 x64 (or Windows 10 x64 Build 19041+)
-- .NET 9.0 SDK or later
-
-### Building the Solution
-```powershell
-# Restore and build all projects in Release mode
-dotnet build Topline.sln -c Release
-```
-
-### Running Unit Tests
-```powershell
-# Execute the comprehensive automated test suite
-dotnet test tests/Topline.Tests/Topline.Tests.csproj
-```
-
-### Publishing the Release Executable
-```powershell
-# Produces release executable in publish/
-dotnet publish src/Topline.App/Topline.App.csproj -c Release -r win-x64 -o publish/
-```
-
-### Running the Application
-Launch the compiled binary directly:
-```powershell
-.\publish\Topline.exe
-```
+- **Terms of Service**: MediaDrop is designed for processing personal media, public domain works, and content for which you have explicit rights or fair-use permissions.
+- **No Circumvention**: MediaDrop does not circumvent DRM, decrypt protected streams, or bypass subscription paywalls.
+- **Privacy Guarantee**: MediaDrop stores zero logs of downloaded content, saves no cookies or trackers, and operates entirely statelessly.
 
 ---
 
-## 05 — Known Technical Limitations
+## ✦ License
 
-1. **Windows Explorer Internal Copy Dialogs:** Windows does not expose a public inter-process broadcast for internal Explorer file copy dialog percentages to standard user-mode processes without third-party kernel minifilter drivers. Because TOPLINE is designed to run safely without administrator privileges or drivers, it monitors file operations via filesystem mutation tracking on active drives, reporting genuine bytes written without inventing progress values.
-2. **Private/Incognito Browser Downloads:** When browsers download files inside private/incognito sessions, temporary files are kept locked or scrubbed depending on the browser vendor's sandbox. TOPLINE identifies standard temporary download containers (`.crdownload`, `.part`, `.opdownload`) created on disk.
-3. **Bluetooth Audio Session Meta:** Certain third-party Bluetooth headphones handle transport controls directly via hardware firmware without routing metadata through Windows GSMTC; TOPLINE reliably surfaces all media apps that support Windows GSMTC (Spotify, Edge, Chrome, Apple Music, VLC, Windows Media Player, etc.).
+MediaDrop is open-source software licensed under the [MIT License](LICENSE).
+Third-party licenses for incorporated libraries are detailed in [THIRD-PARTY-LICENSES.txt](THIRD-PARTY-LICENSES.txt).

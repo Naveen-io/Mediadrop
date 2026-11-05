@@ -1,0 +1,298 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #000000;
+  --surface: #0A0A0A;
+  --surface-secondary: #111111;
+  --surface-elevated: #171717;
+  --border: #292929;
+  --text-primary: #FFFFFF;
+  --text-secondary: #A3A3A3;
+  --text-muted: #737373;
+  --accent: #FFFFFF;
+  --error: #EF4444;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom pure monochrome scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #292929;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #404040;
+}
+
+/* Crisp white selection highlight */
+::selection {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+}
+
+/* =========================================================================
+   Aceternity Spotlight Animation
+   ========================================================================= */
+@keyframes spotlight {
+  0% {
+    opacity: 0;
+    transform: translate(-72%, -62%) scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -40%) scale(1);
+  }
+}
+
+.animate-spotlight {
+  animation: spotlight 2s ease 0.6s 1 forwards;
+}
+
+/* =========================================================================
+   1. Dexter-st Uiverse Loader (.loader-wrapper, .loader-letter, .loader)
+   ========================================================================= */
+.loader-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono), monospace;
+  background-color: #0A0A0A;
+  border: 1px solid #292929;
+  overflow: hidden;
+}
+
+.loader-letter {
+  display: inline-block;
+  opacity: 0.25;
+  animation: loader-letter-anim 2s infinite ease-in-out;
+  text-transform: uppercase;
+}
+
+@keyframes loader-letter-anim {
+  0%, 100% {
+    opacity: 0.25;
+    transform: translateY(0);
+    filter: blur(0.5px);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-2px);
+    filter: blur(0);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+  }
+}
+
+.loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 70%);
+  animation: loader-sweep 2.4s infinite linear;
+  pointer-events: none;
+}
+
+@keyframes loader-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* =========================================================================
+   2. Karthik092726122003 Uiverse Download Button (.styled-wrapper, .button, .button-box, .button-elem)
+   ========================================================================= */
+.styled-wrapper .button {
+  display: block;
+  position: relative;
+  width: 52px;
+  height: 52px;
+  margin: 0;
+  overflow: hidden;
+  outline: none;
+  background-color: transparent;
+  cursor: pointer;
+  border: 0;
+  border-radius: 50%;
+}
+
+.styled-wrapper .button:before,
+.styled-wrapper .button:after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  inset: 6px;
+  box-sizing: border-box;
+}
+
+.styled-wrapper .button:before {
+  border: 3.5px solid #292929;
+  transition: opacity .4s cubic-bezier(.77, 0, .175, 1) 80ms, transform .5s cubic-bezier(.45, 0, .07, 1);
+}
+
+.styled-wrapper .button:after {
+  border: 3.5px solid #FFFFFF;
+  transform: scale(1.25);
+  transition: opacity .4s cubic-bezier(.165, .84, .44, 1), transform .5s cubic-bezier(.25, 1, .5, 1);
+  opacity: 0;
+}
+
+.styled-wrapper .button:hover:after,
+.styled-wrapper .button:focus-visible:after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.styled-wrapper .button-box {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: transform .35s cubic-bezier(.4, 0, .2, 1);
+}
+
+.styled-wrapper .button-elem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+}
+
+.styled-wrapper .button-elem svg {
+  width: 18px;
+  height: 18px;
+  transform: rotate(90deg);
+  fill: #FFFFFF;
+  transition: fill .2s ease;
+}
+
+.styled-wrapper .button:hover .button-box,
+.styled-wrapper .button:focus-visible .button-box {
+  transform: translateX(-52px);
+}
+
+/* =========================================================================
+   3. Praashoo7 Uiverse Input (.input with smooth 250ms focus transition)
+   ========================================================================= */
+.praashoo-input {
+  width: 100%;
+  height: 52px;
+  background-color: #000000;
+  color: #FFFFFF;
+  border-radius: 12px;
+  border: 1px solid #292929;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.8);
+  font-size: 0.95rem;
+  transition: border-color 250ms ease, box-shadow 250ms ease;
+  outline: none;
+}
+
+.praashoo-input::placeholder {
+  color: #737373;
+}
+
+.praashoo-input:focus {
+  border-color: #FFFFFF;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.8), 0 0 0 1px #FFFFFF;
+}
+
+/* Reduced motion preference support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .loader-letter,
+  .loader {
+    animation: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+}
+
+/* =========================================================================
+   4. Magic UI Shimmer Button Animations
+   ========================================================================= */
+@keyframes shimmer-slide {
+  to {
+    transform: translate(calc(100cqw - 100%), 0);
+  }
+}
+
+@keyframes spin-around {
+  0% {
+    transform: translateZ(0) rotate(0);
+  }
+  15%, 35% {
+    transform: translateZ(0) rotate(90deg);
+  }
+  65%, 85% {
+    transform: translateZ(0) rotate(270deg);
+  }
+  100% {
+    transform: translateZ(0) rotate(360deg);
+  }
+}
+
+.animate-shimmer-slide {
+  animation: shimmer-slide var(--speed, 3s) ease-in-out infinite alternate;
+}
+
+.animate-spin-around {
+  animation: spin-around calc(var(--speed, 3s) * 2) infinite linear;
+}
+
+/* =========================================================================
+   5. Apple Liquid Glass Monochrome Theme Overrides
+   ========================================================================= */
+:where([data-theme=dark]), [data-theme=dark], :root {
+  --lg-accent: #ffffff;
+  --lg-green: #ffffff;
+  --lg-ring: rgb(255 255 255 / 0.55);
+  --lg-fill: rgb(18 18 20 / 0.65);
+  --lg-panel-fill: rgb(14 14 16 / 0.75);
+  --lg-edge: rgb(255 255 255 / 0.12);
+  --lg-lens-fill: rgb(255 255 255 / 0.12);
+  --lg-selection-lens-fill: rgb(255 255 255 / 0.15);
+  --lg-tab-selection: rgb(255 255 255 / 0.18);
+  --lg-segment-selection: rgb(255 255 255 / 0.18);
+}

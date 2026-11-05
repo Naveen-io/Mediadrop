@@ -1,0 +1,76 @@
+========================================================================
+                    MEDIADROP THIRD-PARTY LICENSES
+========================================================================
+
+MediaDrop is released under the MIT License.
+MediaDrop incorporates and depends on the following open source software:
+
+------------------------------------------------------------------------
+Backend Technologies & Libraries:
+------------------------------------------------------------------------
+- yt-dlp
+  License: The Unlicense
+  Website: https://github.com/yt-dlp/yt-dlp
+
+- FastAPI
+  License: MIT License
+  Copyright (c) 2018 Sebastián Ramírez
+  Website: https://fastapi.tiangolo.com
+
+- Uvicorn
+  License: BSD 3-Clause License
+  Copyright (c) 2017-present, Encode OSS Ltd.
+  Website: https://www.uvicorn.org
+
+- Pydantic
+  License: MIT License
+  Copyright (c) 2017-present Samuel Colvin and other contributors
+  Website: https://docs.pydantic.dev
+
+- FFmpeg / FFprobe
+  License: LGPL 2.1+ / GPL 2.0+
+  Copyright (c) 2000-present FFmpeg developers
+  Website: https://ffmpeg.org
+
+------------------------------------------------------------------------
+Frontend Technologies & Libraries:
+------------------------------------------------------------------------
+- Next.js
+  License: MIT License
+  Copyright (c) 2024 Vercel, Inc.
+  Website: https://nextjs.org
+
+- React & React-DOM
+  License: MIT License
+  Copyright (c) Meta Platforms, Inc. and affiliates.
+  Website: https://react.dev
+
+- Tailwind CSS
+  License: MIT License
+  Copyright (c) Tailwind Labs, Inc.
+  Website: https://tailwindcss.com
+
+- Lucide React
+  License: ISC License
+  Copyright (c) Lucide Contributors
+  Website: https://lucide.dev
+
+- Framer Motion / Motion
+  License: MIT License
+  Copyright (c) 2018 Framer B.V.
+  Website: https://motion.dev
+
+- @zakisheriff/liquid-glass
+  License: MIT License
+  Copyright (c) Zaki Sheriff
+  Website: https://github.com/zakisheriff/Liquid-Glass
+
+- canvas-confetti
+  License: ISC License
+  Copyright (c) 2020 Kiril Vatev
+  Website: https://github.com/catdad/canvas-confetti
+
+- Aceternity UI & Magic UI Components
+  License: MIT License
+  Website: https://ui.aceternity.com & https://magicui.design
+========================================================================
