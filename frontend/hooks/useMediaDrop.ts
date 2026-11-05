@@ -92,6 +92,54 @@ export function useMediaDrop({ settings, onSuccessDownload, showToast }: UseMedi
         return;
       }
 
+      // Client-side direct media file detection (.mp4, .mp3, .wav, .webm, etc.)
+      const directMatch = cleanUrl.match(/\.(mp4|webm|mp3|wav|m4a|ogg|mov)(\?.*)?$/i);
+      if (directMatch) {
+        const ext = directMatch[1].toLowerCase();
+        const rawFilename = cleanUrl.split('/').pop()?.split('?')[0] || `media.${ext}`;
+        const isAudio = ['mp3', 'wav', 'm4a', 'ogg'].includes(ext);
+        const directData: MediaMetadata = {
+          title: decodeURIComponent(rawFilename),
+          url: cleanUrl,
+          platform: 'Direct',
+          duration: 0,
+          duration_formatted: '00:00:00',
+          thumbnail: '',
+          uploader: 'Direct Link',
+          uploader_url: null,
+          is_live: false,
+          available_formats: [
+            {
+              format_id: 'direct',
+              resolution: isAudio ? 'Audio Stream' : 'Direct Media Stream',
+              ext,
+              filesize: 0,
+              is_audio_only: isAudio,
+              is_video_only: !isAudio,
+            },
+          ],
+          available_audio_formats: isAudio
+            ? [
+                {
+                  format_id: 'direct-audio',
+                  ext,
+                  label: 'Direct Audio Stream',
+                },
+              ]
+            : [],
+        };
+        setMetadata(directData);
+        setOutputType(isAudio ? 'audio' : 'video');
+        setSelectedFormat(ext);
+        setSelectedFormatId('direct');
+        setSelectedQuality('Direct Stream');
+        setState('ready');
+        if (showToast) {
+          showToast('success', `Direct link detected: ${decodeURIComponent(rawFilename)}`);
+        }
+        return;
+      }
+
       // Cancel any ongoing fetch
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
@@ -154,6 +202,38 @@ export function useMediaDrop({ settings, onSuccessDownload, showToast }: UseMedi
 
   const handleDownload = useCallback(async () => {
     if (!metadata || state === 'downloading') return;
+
+    if (selectedFormatId === 'direct') {
+      try {
+        const link = document.createElement('a');
+        link.href = metadata.url;
+        link.download = metadata.title;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        setState('completed');
+        setDownloadProgress(100);
+        if (onSuccessDownload) {
+          onSuccessDownload({
+            title: metadata.title,
+            platform: 'Direct',
+            format: selectedFormat.toUpperCase(),
+            filename: metadata.title,
+            url: metadata.url,
+            filesize: 0,
+          });
+        }
+        if (showToast) {
+          showToast('success', `Exported: ${metadata.title}`);
+        }
+        return;
+      } catch (err) {
+        // Fall back to server download
+      }
+    }
 
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();

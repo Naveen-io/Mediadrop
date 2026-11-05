@@ -63,11 +63,11 @@ export async function parseMediaUrl(url: string, signal?: AbortSignal): Promise<
     const isHttps = typeof window !== 'undefined' && window.location.protocol === 'https:';
     if (isHttps && baseUrl.startsWith('http://localhost')) {
       throw new Error(
-        'Cannot connect to local backend (http://localhost:8000) from an HTTPS deployed site (Netlify). Please deploy your backend to Render/Railway or configure your public backend URL in Settings (gear icon in dock).'
+        'Media processing engine is offline. To download social media links, launch MediaDrop locally via "Start MediaDrop.bat" or connect a cloud backend.'
       );
     }
     throw new Error(
-      `Cannot connect to backend engine at ${baseUrl}. Ensure backend is running or configure URL in Settings.`
+      `Cannot connect to media engine at ${baseUrl}. Please ensure the backend server is running.`
     );
   }
 
@@ -115,10 +115,10 @@ export async function triggerMediaDownload(
     const isHttps = typeof window !== 'undefined' && window.location.protocol === 'https:';
     if (isHttps && baseUrl.startsWith('http://localhost')) {
       throw new Error(
-        'Cannot connect to local backend from HTTPS Netlify. Please set your public backend URL in Settings.'
+        'Media processing engine is offline. Launch MediaDrop locally via "Start MediaDrop.bat" or connect a cloud backend.'
       );
     }
-    throw new Error(`Connection to backend failed at ${baseUrl}. Ensure backend is running.`);
+    throw new Error(`Media engine connection failed at ${baseUrl}.`);
   }
 
   if (!res.ok) {
@@ -195,10 +195,10 @@ export async function submitBatchJob(
     const isHttps = typeof window !== 'undefined' && window.location.protocol === 'https:';
     if (isHttps && baseUrl.startsWith('http://localhost')) {
       throw new Error(
-        'Cannot connect to local backend from HTTPS Netlify. Please set your public backend URL in Settings.'
+        'Media processing engine is offline. Launch MediaDrop locally via "Start MediaDrop.bat" or connect a cloud backend.'
       );
     }
-    throw new Error(`Batch connection to backend failed at ${baseUrl}. Ensure backend is running.`);
+    throw new Error(`Batch connection failed at ${baseUrl}. Ensure backend is running.`);
   }
 
   if (!res.ok) {
