@@ -296,3 +296,23 @@ body {
   --lg-tab-selection: rgb(255 255 255 / 0.18);
   --lg-segment-selection: rgb(255 255 255 / 0.18);
 }
+
+/* Ensure liquid glass buttons maintain sleek dark monochrome glass aesthetics */
+.lg-button--filled {
+  --lg-glass-fill: rgba(255, 255, 255, 0.12) !important;
+  background-color: rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+}
+
+.lg-button--filled:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.18) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.lg-button--filled:disabled {
+  --lg-glass-fill: rgba(255, 255, 255, 0.04) !important;
+  background-color: rgba(255, 255, 255, 0.04) !important;
+  color: rgba(255, 255, 255, 0.35) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}

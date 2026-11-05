@@ -27,9 +27,10 @@ export async function checkBackendHealth(signal?: AbortSignal): Promise<BackendH
       method: 'GET',
       headers: { Accept: 'application/json' },
       signal,
-    });
-    if (!res.ok) {
-      return { status: 'error', lastChecked: Date.now() };
+    }).catch(() => null);
+
+    if (!res || !res.ok) {
+      return { status: 'unreachable', lastChecked: Date.now() };
     }
     const data = await res.json();
     return {
@@ -49,12 +50,26 @@ export async function checkBackendHealth(signal?: AbortSignal): Promise<BackendH
 
 export async function parseMediaUrl(url: string, signal?: AbortSignal): Promise<MediaMetadata> {
   const baseUrl = getBaseUrl();
-  const res = await fetch(`${baseUrl}/api/parse`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url }),
-    signal,
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${baseUrl}/api/parse`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url }),
+      signal,
+    });
+  } catch (err: unknown) {
+    if (signal?.aborted) throw err;
+    const isHttps = typeof window !== 'undefined' && window.location.protocol === 'https:';
+    if (isHttps && baseUrl.startsWith('http://localhost')) {
+      throw new Error(
+        'Cannot connect to local backend (http://localhost:8000) from an HTTPS deployed site (Netlify). Please deploy your backend to Render/Railway or configure your public backend URL in Settings (gear icon in dock).'
+      );
+    }
+    throw new Error(
+      `Cannot connect to backend engine at ${baseUrl}. Ensure backend is running or configure URL in Settings.`
+    );
+  }
 
   if (!res.ok) {
     await handleResponseError(res);
@@ -79,20 +94,32 @@ export async function triggerMediaDownload(
   onProgress?: (progressPercent: number) => void
 ): Promise<{ filename: string; filesize: number }> {
   const baseUrl = getBaseUrl();
-  const res = await fetch(`${baseUrl}/api/download`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      url: options.url,
-      output_type: options.outputType,
-      format_id: options.formatId || undefined,
-      format: options.format,
-      quality: options.quality || undefined,
-      start_time: options.startTime || undefined,
-      end_time: options.endTime || undefined,
-    }),
-    signal,
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${baseUrl}/api/download`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        url: options.url,
+        output_type: options.outputType,
+        format_id: options.formatId || undefined,
+        format: options.format,
+        quality: options.quality || undefined,
+        start_time: options.startTime || undefined,
+        end_time: options.endTime || undefined,
+      }),
+      signal,
+    });
+  } catch (err: unknown) {
+    if (signal?.aborted) throw err;
+    const isHttps = typeof window !== 'undefined' && window.location.protocol === 'https:';
+    if (isHttps && baseUrl.startsWith('http://localhost')) {
+      throw new Error(
+        'Cannot connect to local backend from HTTPS Netlify. Please set your public backend URL in Settings.'
+      );
+    }
+    throw new Error(`Connection to backend failed at ${baseUrl}. Ensure backend is running.`);
+  }
 
   if (!res.ok) {
     await handleResponseError(res);
@@ -150,17 +177,29 @@ export async function submitBatchJob(
   signal?: AbortSignal
 ): Promise<BatchResponse> {
   const baseUrl = getBaseUrl();
-  const res = await fetch(`${baseUrl}/api/batch`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      urls,
-      output_type: outputType,
-      format,
-      quality: quality || undefined,
-    }),
-    signal,
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${baseUrl}/api/batch`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        urls,
+        output_type: outputType,
+        format,
+        quality: quality || undefined,
+      }),
+      signal,
+    });
+  } catch (err: unknown) {
+    if (signal?.aborted) throw err;
+    const isHttps = typeof window !== 'undefined' && window.location.protocol === 'https:';
+    if (isHttps && baseUrl.startsWith('http://localhost')) {
+      throw new Error(
+        'Cannot connect to local backend from HTTPS Netlify. Please set your public backend URL in Settings.'
+      );
+    }
+    throw new Error(`Batch connection to backend failed at ${baseUrl}. Ensure backend is running.`);
+  }
 
   if (!res.ok) {
     await handleResponseError(res);

@@ -120,16 +120,16 @@ export function MediaInput({
             </GlassButton>
           )}
 
-          {/* Primary Action Button: variant="filled" with shimmer */}
+          {/* Primary Action Button */}
           <GlassButton
             type="submit"
             disabled={isLoading || !inputValue.trim()}
-            variant="filled"
+            variant="glass"
             size="md"
             shimmer={true}
             intensity={6}
             aria-label="Analyze URL"
-            className="w-full sm:w-auto font-semibold shadow-sm"
+            className="w-full sm:w-auto font-semibold text-white bg-white/10 hover:bg-white/15 border border-white/20 hover:border-white/40 shadow-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {isLoading ? (
               <>
