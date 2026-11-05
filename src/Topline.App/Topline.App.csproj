@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows10.0.22621.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AssemblyName>Topline</AssemblyName>
+    <RootNamespace>Topline.App</RootNamespace>
+    <PublishSingleFile>false</PublishSingleFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Topline.Core\Topline.Core.csproj" />
+    <ProjectReference Include="..\Topline.Windows\Topline.Windows.csproj" />
+    <ProjectReference Include="..\Topline.Modules\Topline.Modules.csproj" />
+  </ItemGroup>
+
+</Project>

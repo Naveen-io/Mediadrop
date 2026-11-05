@@ -1,0 +1,251 @@
+<Window x:Class="Topline.App.Views.TopBarWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Topline"
+        Height="36"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="NoResize"
+        Topmost="True"
+        ShowInTaskbar="False"
+        SnapsToDevicePixels="True"
+        UseLayoutRounding="True"
+        MouseLeave="OnWindowMouseLeave"
+        MouseEnter="OnWindowMouseEnter">
+
+    <Grid x:Name="RootGrid" Height="36" VerticalAlignment="Top">
+        <!-- Main Top Bar Shell -->
+        <Border x:Name="BarBorder"
+                Background="{DynamicResource TopBarBackgroundBrush}"
+                BorderBrush="{DynamicResource BorderDividerBrush}"
+                BorderThickness="0,0,0,1"
+                SnapsToDevicePixels="True">
+
+            <Grid Margin="16,0,16,0">
+                <Grid.ColumnDefinitions>
+                    <!-- Left: Wordmark & Workspace -->
+                    <ColumnDefinition Width="Auto" />
+                    <!-- Center: Activity Pill -->
+                    <ColumnDefinition Width="*" />
+                    <!-- Right: Clock, Shortcuts & Controls -->
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!-- LEFT: Wordmark and Workspace Indicator -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Style="{StaticResource TopBarButton}"
+                            Padding="4,2"
+                            ToolTip="TOPLINE Desktop Companion"
+                            Click="OnWordmarkClick">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <!-- Elegant subtle Wordmark -->
+                            <TextBlock Text="TOPLINE"
+                                       FontFamily="{StaticResource AppFontMedium}"
+                                       FontSize="11"
+                                       FontWeight="Bold"
+                                       Foreground="{DynamicResource TextWordmarkBrush}"
+                                       VerticalAlignment="Center">
+                                <TextBlock.RenderTransform>
+                                    <ScaleTransform ScaleX="1.05" />
+                                </TextBlock.RenderTransform>
+                            </TextBlock>
+
+                            <!-- Subtle status dot -->
+                            <Ellipse x:Name="StatusDot"
+                                     Width="5"
+                                     Height="5"
+                                     Margin="8,1,0,0"
+                                     Fill="{DynamicResource AccentBrush}"
+                                     VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <!-- CENTRE: Active Activity Hero (Only visible when active) -->
+                <Grid Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <!-- Idle State: Completely Quiet Spacer -->
+                    <TextBlock x:Name="IdleStateText"
+                               Text=""
+                               Visibility="Collapsed" />
+
+                    <!-- Active Activity Chip -->
+                    <Button x:Name="ActivityChip"
+                            Style="{StaticResource ActivityChipButton}"
+                            Visibility="Collapsed"
+                            Click="OnActivityChipClick"
+                            MouseEnter="OnActivityChipMouseEnter"
+                            MouseLeave="OnActivityChipMouseLeave">
+                        <Grid VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <!-- Category Icon Glyph -->
+                                <TextBlock x:Name="ActivityGlyphText"
+                                           FontFamily="{StaticResource IconFont}"
+                                           FontSize="13"
+                                           Foreground="{DynamicResource AccentBrush}"
+                                           Margin="0,0,8,0"
+                                           VerticalAlignment="Center" />
+
+                                <!-- Title -->
+                                <TextBlock x:Name="ActivityTitleText"
+                                           FontFamily="{StaticResource AppFontMedium}"
+                                           FontSize="12"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           VerticalAlignment="Center"
+                                           MaxWidth="260"
+                                           TextTrimming="CharacterEllipsis" />
+
+                                <!-- Dot Separator -->
+                                <TextBlock Text=" • "
+                                           FontFamily="{StaticResource AppFont}"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextTertiaryBrush}"
+                                           VerticalAlignment="Center" />
+
+                                <!-- Subtitle / Status info -->
+                                <TextBlock x:Name="ActivitySubtitleText"
+                                           FontFamily="{StaticResource AppFont}"
+                                           FontSize="11"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           VerticalAlignment="Center"
+                                           MaxWidth="220"
+                                           TextTrimming="CharacterEllipsis" />
+
+                                <!-- Inline Quick Action Buttons (Visible on hover) -->
+                                <StackPanel x:Name="InlineActionsPanel"
+                                            Orientation="Horizontal"
+                                            Margin="8,0,0,0"
+                                            VerticalAlignment="Center"
+                                            Visibility="Collapsed">
+                                    
+                                    <!-- Primary Inline Action -->
+                                    <Button x:Name="PrimaryInlineButton"
+                                            Style="{StaticResource InlineActionButton}"
+                                            Margin="2,0"
+                                            Click="OnPrimaryInlineButtonClick">
+                                        <TextBlock x:Name="PrimaryInlineGlyph"
+                                                   FontFamily="{StaticResource IconFont}"
+                                                   FontSize="11"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center" />
+                                    </Button>
+
+                                    <!-- Secondary Inline Action -->
+                                    <Button x:Name="SecondaryInlineButton"
+                                            Style="{StaticResource InlineActionButton}"
+                                            Margin="2,0"
+                                            Click="OnSecondaryInlineButtonClick">
+                                        <TextBlock x:Name="SecondaryInlineGlyph"
+                                                   FontFamily="{StaticResource IconFont}"
+                                                   FontSize="11"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center" />
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Subtle Bottom Progress Line for Active Timer / Progress -->
+                            <ProgressBar x:Name="ActivityProgressLine"
+                                         Height="2"
+                                         VerticalAlignment="Bottom"
+                                         Margin="-10,0,-10,-3"
+                                         Minimum="0"
+                                         Maximum="1"
+                                         BorderThickness="0"
+                                         Background="Transparent"
+                                         Foreground="{DynamicResource AccentBrush}"
+                                         Visibility="Collapsed" />
+                        </Grid>
+                    </Button>
+                </Grid>
+
+                <!-- RIGHT: Clock, Audio, Quick Timer, Expand & Settings -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <!-- Live Clock -->
+                    <Button Style="{StaticResource TopBarButton}"
+                            Padding="8,3"
+                            Click="OnClockClick"
+                            ToolTip="Click to toggle expanded activity panel">
+                        <TextBlock x:Name="ClockText"
+                                   Text="12:00"
+                                   FontFamily="{StaticResource AppFontMedium}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextPrimaryBrush}"
+                                   VerticalAlignment="Center" />
+                    </Button>
+
+                    <!-- Divider -->
+                    <Rectangle Width="1"
+                               Height="14"
+                               Fill="{DynamicResource BorderDividerBrush}"
+                               Margin="4,0"
+                               VerticalAlignment="Center" />
+
+                    <!-- Quick Audio Settings Button -->
+                    <Button Style="{StaticResource TopBarButton}"
+                            Width="28"
+                            Height="26"
+                            ToolTip="Audio &amp; Volume Controls"
+                            Click="OnAudioButtonClick">
+                        <TextBlock FontFamily="{StaticResource IconFont}"
+                                   Text="&#xE767;"
+                                   FontSize="13"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+                    </Button>
+
+                    <!-- Quick 25m Timer Button -->
+                    <Button Style="{StaticResource TopBarButton}"
+                            Width="28"
+                            Height="26"
+                            ToolTip="Quick 25m Focus Timer"
+                            Click="OnQuickTimerButtonClick">
+                        <TextBlock FontFamily="{StaticResource IconFont}"
+                                   Text="&#xE916;"
+                                   FontSize="13"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+                    </Button>
+
+                    <!-- Expand / Collapse Dropdown Panel Chevron -->
+                    <Button x:Name="ExpandButton"
+                            Style="{StaticResource TopBarButton}"
+                            Width="28"
+                            Height="26"
+                            ToolTip="Activity Panel"
+                            Click="OnExpandButtonClick">
+                        <TextBlock x:Name="ExpandChevron"
+                                   FontFamily="{StaticResource IconFont}"
+                                   Text="&#xE70D;"
+                                   FontSize="11"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+                    </Button>
+
+                    <!-- Compact Settings Gear -->
+                    <Button Style="{StaticResource TopBarButton}"
+                            Width="28"
+                            Height="26"
+                            ToolTip="TOPLINE Settings"
+                            Click="OnSettingsButtonClick">
+                        <TextBlock FontFamily="{StaticResource IconFont}"
+                                   Text="&#xE713;"
+                                   FontSize="13"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Invisible auto-hide hit trigger strip at top edge (2px) -->
+        <Border x:Name="AutoHideTrigger"
+                Height="2"
+                VerticalAlignment="Top"
+                Background="Transparent"
+                Visibility="Collapsed"
+                MouseEnter="OnAutoHideTriggerMouseEnter" />
+    </Grid>
+</Window>

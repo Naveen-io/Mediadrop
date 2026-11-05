@@ -1,0 +1,541 @@
+<Window x:Class="Topline.App.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TOPLINE Settings"
+        Width="580"
+        Height="620"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource SurfaceBackgroundBrush}"
+        Foreground="{DynamicResource TextPrimaryBrush}"
+        SnapsToDevicePixels="True"
+        UseLayoutRounding="True">
+
+    <Grid Margin="24,20,24,20">
+        <Grid.RowDefinitions>
+            <!-- Header -->
+            <RowDefinition Height="Auto" />
+            <!-- Tabs & Content -->
+            <RowDefinition Height="*" />
+            <!-- Footer Buttons -->
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0" Margin="0,0,0,16">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="TOPLINE"
+                           FontFamily="{StaticResource AppFontMedium}"
+                           FontSize="18"
+                           FontWeight="Bold"
+                           Foreground="{DynamicResource TextPrimaryBrush}" />
+                <TextBlock Text="Settings"
+                           FontFamily="{StaticResource AppFont}"
+                           FontSize="18"
+                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           Margin="8,0,0,0" />
+            </StackPanel>
+            <TextBlock Text="v1.0 • Native Windows 11 Companion"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"
+                       FontFamily="{StaticResource AppFont}"
+                       FontSize="11"
+                       Foreground="{DynamicResource TextTertiaryBrush}" />
+        </Grid>
+
+        <!-- Tab Navigation and Content -->
+        <TabControl Grid.Row="1"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Margin="0,0,0,16">
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="FontFamily" Value="{StaticResource AppFontMedium}" />
+                    <Setter Property="FontSize" Value="12" />
+                    <Setter Property="Padding" Value="14,6" />
+                    <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabItem">
+                                <Border x:Name="border"
+                                        Background="Transparent"
+                                        BorderBrush="{DynamicResource BorderDividerBrush}"
+                                        BorderThickness="0,0,0,2"
+                                        Padding="{TemplateBinding Padding}"
+                                        Margin="0,0,8,0"
+                                        Cursor="Hand">
+                                    <ContentPresenter ContentSource="Header" />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+                                        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabControl.Resources>
+
+            <!-- ================= TAB 1: GENERAL ================= -->
+            <TabItem Header="General">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,12,0,0">
+                    <StackPanel>
+                        <!-- Start with Windows -->
+                        <Border Background="{DynamicResource CardBackgroundBrush}"
+                                BorderBrush="{DynamicResource BorderDividerBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="16,12"
+                                Margin="0,0,0,12">
+                            <Grid>
+                                <StackPanel VerticalAlignment="Center" MaxWidth="380" HorizontalAlignment="Left">
+                                    <TextBlock Text="Start with Windows"
+                                               FontFamily="{StaticResource AppFontMedium}"
+                                               FontSize="13"
+                                               FontWeight="SemiBold" />
+                                    <TextBlock Text="Launch TOPLINE automatically when signing into your PC"
+                                               FontSize="11"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Margin="0,2,0,0" />
+                                </StackPanel>
+                                <CheckBox x:Name="StartWithWindowsCheckBox"
+                                          HorizontalAlignment="Right"
+                                          VerticalAlignment="Center" />
+                            </Grid>
+                        </Border>
+
+                        <!-- Reserve Desktop Space (AppBar) -->
+                        <Border Background="{DynamicResource CardBackgroundBrush}"
+                                BorderBrush="{DynamicResource BorderDividerBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="16,12"
+                                Margin="0,0,0,12">
+                            <Grid>
+                                <StackPanel VerticalAlignment="Center" MaxWidth="380" HorizontalAlignment="Left">
+                                    <TextBlock Text="Reserve Desktop Space (AppBar Docking)"
+                                               FontFamily="{StaticResource AppFontMedium}"
+                                               FontSize="13"
+                                               FontWeight="SemiBold" />
+                                    <TextBlock Text="Registers as a native Windows AppBar so maximized windows stop beneath TOPLINE instead of being overlapped"
+                                               FontSize="11"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               TextWrapping="Wrap"
+                                               Margin="0,2,0,0" />
+                                </StackPanel>
+                                <CheckBox x:Name="ReserveDesktopSpaceCheckBox"
+                                          HorizontalAlignment="Right"
+                                          VerticalAlignment="Center" />
+                            </Grid>
+                        </Border>
+
+                        <!-- Auto-Hide -->
+                        <Border Background="{DynamicResource CardBackgroundBrush}"
+                                BorderBrush="{DynamicResource BorderDividerBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="16,12"
+                                Margin="0,0,0,12">
+                            <Grid>
+                                <StackPanel VerticalAlignment="Center" MaxWidth="380" HorizontalAlignment="Left">
+                                    <TextBlock Text="Auto-Hide"
+                                               FontFamily="{StaticResource AppFontMedium}"
+                                               FontSize="13"
+                                               FontWeight="SemiBold" />
+                                    <TextBlock Text="Automatically roll up the bar when idle, and reveal when touching the top screen edge"
+                                               FontSize="11"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               TextWrapping="Wrap"
+                                               Margin="0,2,0,0" />
+                                </StackPanel>
+                                <CheckBox x:Name="AutoHideCheckBox"
+                                          HorizontalAlignment="Right"
+                                          VerticalAlignment="Center" />
+                            </Grid>
+                        </Border>
+
+                        <!-- Fullscreen Behavior -->
+                        <Border Background="{DynamicResource CardBackgroundBrush}"
+                                BorderBrush="{DynamicResource BorderDividerBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="16,12"
+                                Margin="0,0,0,12">
+                            <Grid>
+                                <StackPanel VerticalAlignment="Center" MaxWidth="380" HorizontalAlignment="Left">
+                                    <TextBlock Text="Ignore in Fullscreen"
+                                               FontFamily="{StaticResource AppFontMedium}"
+                                               FontSize="13"
+                                               FontWeight="SemiBold" />
+                                    <TextBlock Text="Automatically yield and hide TOPLINE when playing fullscreen games or watching movies"
+                                               FontSize="11"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               TextWrapping="Wrap"
+                                               Margin="0,2,0,0" />
+                                </StackPanel>
+                                <CheckBox x:Name="IgnoreFullscreenCheckBox"
+                                          HorizontalAlignment="Right"
+                                          VerticalAlignment="Center" />
+                            </Grid>
+                        </Border>
+
+                        <!-- 24-Hour Clock -->
+                        <Border Background="{DynamicResource CardBackgroundBrush}"
+                                BorderBrush="{DynamicResource BorderDividerBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="16,12"
+                                Margin="0,0,0,12">
+                            <Grid>
+                                <StackPanel VerticalAlignment="Center" MaxWidth="380" HorizontalAlignment="Left">
+                                    <TextBlock Text="24-Hour Clock"
+                                               FontFamily="{StaticResource AppFontMedium}"
+                                               FontSize="13"
+                                               FontWeight="SemiBold" />
+                                    <TextBlock Text="Display time in 24-hour format (e.g. 17:30) instead of 12-hour AM/PM"
+                                               FontSize="11"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Margin="0,2,0,0" />
+                                </StackPanel>
+                                <CheckBox x:Name="Use24HourClockCheckBox"
+                                          HorizontalAlignment="Right"
+                                          VerticalAlignment="Center" />
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- ================= TAB 2: APPEARANCE ================= -->
+            <TabItem Header="Appearance">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,12,0,0">
+                    <StackPanel>
+                        <!-- Theme Selection -->
+                        <Border Background="{DynamicResource CardBackgroundBrush}"
+                                BorderBrush="{DynamicResource BorderDividerBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="16,14"
+                                Margin="0,0,0,12">
+                            <Grid>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Theme"
+                                               FontFamily="{StaticResource AppFontMedium}"
+                                               FontSize="13"
+                                               FontWeight="SemiBold" />
+                                    <TextBlock Text="Choose preferred color scheme for TOPLINE surfaces"
+                                               FontSize="11"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Margin="0,2,0,0" />
+                                </StackPanel>
+                                <ComboBox x:Name="ThemeComboBox"
+                                          Width="150"
+                                          HorizontalAlignment="Right"
+                                          VerticalAlignment="Center">
+                                    <ComboBoxItem Content="Dark" Tag="Dark" />
+                                    <ComboBoxItem Content="Light" Tag="Light" />
+                                    <ComboBoxItem Content="Follow Windows" Tag="System" />
+                                </ComboBox>
+                            </Grid>
+                        </Border>
+
+                        <!-- Bar Height Slider -->
+                        <Border Background="{DynamicResource CardBackgroundBrush}"
+                                BorderBrush="{DynamicResource BorderDividerBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="16,14"
+                                Margin="0,0,0,12">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <TextBlock Text="Bar Height"
+                                               FontFamily="{StaticResource AppFontMedium}"
+                                               FontSize="13"
+                                               FontWeight="SemiBold" />
+                                    <TextBlock x:Name="BarHeightValueText"
+                                               Text="36 px"
+                                               HorizontalAlignment="Right"
+                                               FontFamily="{StaticResource AppFontMedium}"
+                                               FontSize="12"
+                                               Foreground="{DynamicResource AccentBrush}" />
+                                </Grid>
+                                <Slider x:Name="BarHeightSlider"
+                                        Grid.Row="1"
+                                        Minimum="32"
+                                        Maximum="44"
+                                        TickFrequency="2"
+                                        IsSnapToTickEnabled="True"
+                                        Margin="0,10,0,0"
+                                        ValueChanged="OnBarHeightSliderValueChanged" />
+                            </Grid>
+                        </Border>
+
+                        <!-- Opacity Slider -->
+                        <Border Background="{DynamicResource CardBackgroundBrush}"
+                                BorderBrush="{DynamicResource BorderDividerBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="16,14"
+                                Margin="0,0,0,12">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <TextBlock Text="Background Opacity"
+                                               FontFamily="{StaticResource AppFontMedium}"
+                                               FontSize="13"
+                                               FontWeight="SemiBold" />
+                                    <TextBlock x:Name="OpacityValueText"
+                                               Text="96%"
+                                               HorizontalAlignment="Right"
+                                               FontFamily="{StaticResource AppFontMedium}"
+                                               FontSize="12"
+                                               Foreground="{DynamicResource AccentBrush}" />
+                                </Grid>
+                                <Slider x:Name="OpacitySlider"
+                                        Grid.Row="1"
+                                        Minimum="70"
+                                        Maximum="100"
+                                        TickFrequency="5"
+                                        IsSnapToTickEnabled="True"
+                                        Margin="0,10,0,0"
+                                        ValueChanged="OnOpacitySliderValueChanged" />
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- ================= TAB 3: MODULES ================= -->
+            <TabItem Header="Modules">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,12,0,0">
+                    <StackPanel>
+                        <!-- Media Module -->
+                        <Border Background="{DynamicResource CardBackgroundBrush}"
+                                BorderBrush="{DynamicResource BorderDividerBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="14,10"
+                                Margin="0,0,0,10">
+                            <Grid>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Media Controls (GSMTC)"
+                                               FontFamily="{StaticResource AppFontMedium}"
+                                               FontSize="13"
+                                               FontWeight="SemiBold" />
+                                    <TextBlock Text="Windows media session awareness: track title, artist, playback controls"
+                                               FontSize="11"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Margin="0,2,0,0" />
+                                </StackPanel>
+                                <CheckBox x:Name="MediaModuleCheckBox"
+                                          HorizontalAlignment="Right"
+                                          VerticalAlignment="Center" />
+                            </Grid>
+                        </Border>
+
+                        <!-- Downloads Module -->
+                        <Border Background="{DynamicResource CardBackgroundBrush}"
+                                BorderBrush="{DynamicResource BorderDividerBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="14,10"
+                                Margin="0,0,0,10">
+                            <Grid>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Download Activity"
+                                               FontFamily="{StaticResource AppFontMedium}"
+                                               FontSize="13"
+                                               FontWeight="SemiBold" />
+                                    <TextBlock Text="Monitors in-flight browser downloads and provides instant file opening"
+                                               FontSize="11"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Margin="0,2,0,0" />
+                                </StackPanel>
+                                <CheckBox x:Name="DownloadModuleCheckBox"
+                                          HorizontalAlignment="Right"
+                                          VerticalAlignment="Center" />
+                            </Grid>
+                        </Border>
+
+                        <!-- File Operations Module -->
+                        <Border Background="{DynamicResource CardBackgroundBrush}"
+                                BorderBrush="{DynamicResource BorderDividerBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="14,10"
+                                Margin="0,0,0,10">
+                            <Grid>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="File Operation Awareness"
+                                               FontFamily="{StaticResource AppFontMedium}"
+                                               FontSize="13"
+                                               FontWeight="SemiBold" />
+                                    <TextBlock Text="Monitors active high-volume file transfers and mutation milestones"
+                                               FontSize="11"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Margin="0,2,0,0" />
+                                </StackPanel>
+                                <CheckBox x:Name="FileOperationModuleCheckBox"
+                                          HorizontalAlignment="Right"
+                                          VerticalAlignment="Center" />
+                            </Grid>
+                        </Border>
+
+                        <!-- USB Storage Module -->
+                        <Border Background="{DynamicResource CardBackgroundBrush}"
+                                BorderBrush="{DynamicResource BorderDividerBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="14,10"
+                                Margin="0,0,0,10">
+                            <Grid>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="USB Device Notifications"
+                                               FontFamily="{StaticResource AppFontMedium}"
+                                               FontSize="13"
+                                               FontWeight="SemiBold" />
+                                    <TextBlock Text="Removable drive insertion detection with safe dismount &amp; ejection"
+                                               FontSize="11"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Margin="0,2,0,0" />
+                                </StackPanel>
+                                <CheckBox x:Name="UsbModuleCheckBox"
+                                          HorizontalAlignment="Right"
+                                          VerticalAlignment="Center" />
+                            </Grid>
+                        </Border>
+
+                        <!-- Timer Module -->
+                        <Border Background="{DynamicResource CardBackgroundBrush}"
+                                BorderBrush="{DynamicResource BorderDividerBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="14,10"
+                                Margin="0,0,0,10">
+                            <Grid>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Focus Timer"
+                                               FontFamily="{StaticResource AppFontMedium}"
+                                               FontSize="13"
+                                               FontWeight="SemiBold" />
+                                    <TextBlock Text="Built-in countdown timer with progress display and chime"
+                                               FontSize="11"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Margin="0,2,0,0" />
+                                </StackPanel>
+                                <CheckBox x:Name="TimerModuleCheckBox"
+                                          HorizontalAlignment="Right"
+                                          VerticalAlignment="Center" />
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- ================= TAB 4: PRIVACY & ABOUT ================= -->
+            <TabItem Header="Privacy &amp; About">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,12,0,0">
+                    <StackPanel>
+                        <!-- Privacy Guarantee -->
+                        <Border Background="{DynamicResource CardBackgroundBrush}"
+                                BorderBrush="{DynamicResource BorderDividerBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="16,14"
+                                Margin="0,0,0,12">
+                            <StackPanel>
+                                <TextBlock Text="100% Local &amp; Private"
+                                           FontFamily="{StaticResource AppFontMedium}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource AccentBrush}" />
+                                <TextBlock Text="TOPLINE is designed strictly as a local native Windows utility. It does NOT contain telemetry, does NOT connect to any cloud services, does NOT collect personal data, and runs without background daemon services."
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           TextWrapping="Wrap"
+                                           Margin="0,8,0,0" />
+                                <TextBlock Text="All activity data (media playback, download status, timers, and connected USB devices) is queried directly from Windows 11 system events on your machine and stored only in memory or your local AppData folder."
+                                           FontSize="11"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           TextWrapping="Wrap"
+                                           Margin="0,6,0,0" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Clear History -->
+                        <Border Background="{DynamicResource CardBackgroundBrush}"
+                                BorderBrush="{DynamicResource BorderDividerBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="16,14"
+                                Margin="0,0,0,12">
+                            <Grid>
+                                <StackPanel VerticalAlignment="Center" MaxWidth="360" HorizontalAlignment="Left">
+                                    <TextBlock Text="Clear Activity History"
+                                               FontFamily="{StaticResource AppFontMedium}"
+                                               FontSize="13"
+                                               FontWeight="SemiBold" />
+                                    <TextBlock Text="Erase all local recent activity records from your PC"
+                                               FontSize="11"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Margin="0,2,0,0" />
+                                </StackPanel>
+                                <Button Content="Clear History"
+                                        Style="{StaticResource SecondaryButton}"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Click="OnClearHistoryClick" />
+                            </Grid>
+                        </Border>
+
+                        <!-- Technical Architecture -->
+                        <Border Background="{DynamicResource CardBackgroundBrush}"
+                                BorderBrush="{DynamicResource BorderDividerBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="16,14">
+                            <StackPanel>
+                                <TextBlock Text="Architecture"
+                                           FontFamily="{StaticResource AppFontMedium}"
+                                           FontSize="13"
+                                           FontWeight="SemiBold" />
+                                <TextBlock Text="• Stack: C# / .NET 9 Desktop Runtime with Per-Monitor V2 DPI&#x0a;• OS Integration: Shell AppBar (SHAppBarMessage), WinRT GSMTC, Win32 WM_DEVICECHANGE&#x0a;• Target OS: Windows 11 x64&#x0a;• Footprint: Low idle RAM, event-driven, zero polling loops"
+                                           FontSize="11"
+                                           FontFamily="{StaticResource AppFont}"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           Margin="0,6,0,0" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+
+        <!-- Footer Buttons -->
+        <Border Grid.Row="2"
+                BorderBrush="{DynamicResource BorderDividerBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="0,14,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Save &amp; Apply"
+                        Style="{StaticResource PrimaryButton}"
+                        Margin="0,0,8,0"
+                        Click="OnSaveClick" />
+                <Button Content="Close"
+                        Style="{StaticResource SecondaryButton}"
+                        Click="OnCloseClick" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
